@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifikasi Pendaftaran</title>
+    <style>
+        body {
+            background-color: #f3f3f3;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .verification-content {
+            align-items: center;
+            flex-direction: column;
+            display: flex;
+            justify-content: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .verification-link {
+            display: inline-block;
+            background-color: #007BFF;
+            color: #ffffff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .verification-link:hover {
+            background-color: #0056b3;
+        }
+
+        .verification-content a {
+            color: white;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="verification-content">
+            <div>
+                <h1>Selamat datang di Layanan Kami</h1>
+                <p>Harap verifikasi akun Anda dengan mengklik tautan berikut:</p>
+                <a class="verification-link" href="{{.verificationLink}}">Verifikasi Akun</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

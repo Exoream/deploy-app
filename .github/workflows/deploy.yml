@@ -1,0 +1,52 @@
+name: Deploy RestAPI to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+    - 
+      name: Checkout
+      uses: actions/checkout@v3
+    -
+      name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+    -
+      name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    -
+      name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    -
+      name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/deploy-app:latest
+
+  deploy-rest-api:
+    runs-on: ubuntu-latest
+    needs: docker
+    steps:
+      - name: Connect to server using SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            sudo docker stop restapi
+            sudo docker rm restapi
+            sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/deploy-app:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/deploy-app:latest
+            sudo docker run -d -p 8080:8080 -e SERVERPORT=${{ secrets.SERVERPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} -e JWT_SECRET=${{ secrets.JWT_SECRET }} -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} -e EMAIL_HOST=${{ secrets.EMAIL_HOST }} -e EMAIL_FROM=${{ secrets.EMAIL_FROM }} -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} -e EMAIL_PORT=${{ secrets.EMAIL_PORT }} -e GOOGLE_CLOUD_CREDENTIALS_PATH=${{ secrets.GOOGLE_CLOUD_CREDENTIALS_PATH }} --name restapi ${{ secrets.DOCKERHUB_USERNAME }}/deploy-app:latest
