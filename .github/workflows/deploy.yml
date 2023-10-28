@@ -18,7 +18,7 @@ jobs:
       env:
         GOOGLE_CLOUD_CREDENTIALS_PATH: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_PATH }}
       run: |
-        echo "$GOOGLE_CLOUD_CREDENTIALS_PATH" > keys.json
+        echo "$GOOGLE_CLOUD_CREDENTIALS_PATH" | base64 --decode | jq > keys.json
     -
       name: Set up QEMU
       uses: docker/setup-qemu-action@v2
