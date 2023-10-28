@@ -16,7 +16,7 @@ jobs:
       name: Load GCP Credentials
       shell: bash
       env:
-        GCP: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_PATH}}
+        GCP: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_PATH }}
       run: |
         echo "$GCP" > keys.json
     -
