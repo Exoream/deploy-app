@@ -15,10 +15,8 @@ jobs:
     -
       name: Load GCP Credentials
       shell: bash
-      env:
-        GOOGLE_CLOUD_CREDENTIALS_PATH: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_PATH }}
       run: |
-        echo "$GOOGLE_CLOUD_CREDENTIALS_PATH" | base64 --decode | jq > keys.json
+        echo "${{ secrets.GOOGLE_CLOUD_CREDENTIALS }}" > keys.json
     -
       name: Set up QEMU
       uses: docker/setup-qemu-action@v2
