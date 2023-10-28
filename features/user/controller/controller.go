@@ -42,7 +42,7 @@ func (uco *UserController) CreateUser(c echo.Context) error {
 		}
 	}
 
-	verificationLink := "http://localhost:8080/verify?token=" + uniqueToken
+	verificationLink := "http://34.27.157.149:8080/verify?token=" + uniqueToken
 	emailTemplate, err := ioutil.ReadFile("email/templates/account_registration.html")
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helper.ErrorResponse("failed to read email template"))
