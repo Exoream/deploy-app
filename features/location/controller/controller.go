@@ -182,5 +182,5 @@ func (uco *LocationController) GetAllLocation(c echo.Context) error {
 		locationGetAllData = append(locationGetAllData, userResponse)
 	}
 
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success get all user rubbish", locationGetAllData))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("success get all location", locationGetAllData))
 }
