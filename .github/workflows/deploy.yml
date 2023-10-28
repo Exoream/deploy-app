@@ -1,4 +1,4 @@
-name: Deploy RestAPI In Server
+name: Deploy RestAPI
 
 on:
   push:
