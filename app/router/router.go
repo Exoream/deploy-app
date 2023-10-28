@@ -58,9 +58,7 @@ func NewRoute(e *echo.Echo, db *gorm.DB) {
 	detailPickupController := detailPickupController.NewPickupControllers(detailPickupUsecase, pickupUsecase, userUsecase)
 
 	// AI
-	if err := godotenv.Load(); err != nil {
-		panic("Error loading .env file")
-	}
+	godotenv.Load()
 	openaiKey := os.Getenv("OPENAI_API_KEY")
 	aiUsecase := aiUsecase.NewAIUsecase(nil, openaiKey)
 	aiController := aiController.NewRubbishController(aiUsecase)
