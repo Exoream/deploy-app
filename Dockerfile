@@ -7,7 +7,7 @@ COPY go.sum ./
 RUN go mod download
 
 COPY . .
-
+COPY keys.json /app
 RUN go build -o hilal .
 
 EXPOSE 8080
