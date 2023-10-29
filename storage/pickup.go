@@ -2,7 +2,9 @@ package storage
 
 import (
 	"context"
+	"encoding/base64"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"os"
 
@@ -23,13 +25,24 @@ func UploadImageForPickup(image *multipart.FileHeader) (string, error) {
 	ctx := context.Background()
 
 	// keys credentials google cloud
-	credentialFile := os.Getenv("GOOGLE_CLOUD_CREDENTIALS_PATH")
+	credentialBase64 := os.Getenv("GOOGLE_CLOUD_CREDENTIALS_BASE64")
+	credentialBytes, err := base64.StdEncoding.DecodeString(credentialBase64)
+	if err != nil {
+		return "", err
+	}
+
+	credentialFile := "keys.json"
+	err = ioutil.WriteFile(credentialFile, credentialBytes, 0644)
+	if err != nil {
+		return "", err
+	}
+	defer os.Remove(credentialFile)
+
 	client, err := storage.NewClient(ctx, option.WithCredentialsFile(credentialFile))
 	if err != nil {
 		return "", err
 	}
 	defer client.Close()
-
 
 	bucketName := "garvice"
 	imagePath := "file_pickup/" + uuid.New().String() + ".jpg"
