@@ -13,12 +13,6 @@ jobs:
       name: Checkout
       uses: actions/checkout@v3
     -
-      name: Load GCP Credentials
-      env:
-        GOOGLE_CLOUD_CREDENTIALS_PATH: ${{ secrets.GOOGLE_CLOUD_CREDENTIALS_PATH }}
-      run: |
-        echo "$GOOGLE_CLOUD_CREDENTIALS" | base64 --decode > keys.json
-    -
       name: Set up QEMU
       uses: docker/setup-qemu-action@v2
     -
@@ -55,4 +49,4 @@ jobs:
             sudo docker rm restapi
             sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/deploy-app:latest
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/deploy-app:latest
-            sudo docker run -d -p 8080:8080 -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} -e SERVERPORT=${{ secrets.SERVERPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} -e JWT_SECRET=${{ secrets.JWT_SECRET }} -e EMAIL_HOST=${{ secrets.EMAIL_HOST }} -e EMAIL_FROM=${{ secrets.EMAIL_FROM }} -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} -e EMAIL_PORT=${{ secrets.EMAIL_PORT }} --name restapi ${{ secrets.DOCKERHUB_USERNAME }}/deploy-app:latest
+            sudo docker run -d -p 8080:8080 -e GOOGLE_CLOUD_CREDENTIALS_PATH=${{ secrets.GOOGLE_CLOUD_CREDENTIALS_PATH }} -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} -e SERVERPORT=${{ secrets.SERVERPORT }} -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=${{ secrets.DBPORT }} -e DBNAME=${{ secrets.DBNAME }} -e JWT_SECRET=${{ secrets.JWT_SECRET }} -e EMAIL_HOST=${{ secrets.EMAIL_HOST }} -e EMAIL_FROM=${{ secrets.EMAIL_FROM }} -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} -e EMAIL_PORT=${{ secrets.EMAIL_PORT }} --name restapi ${{ secrets.DOCKERHUB_USERNAME }}/deploy-app:latest
